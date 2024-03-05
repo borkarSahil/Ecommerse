@@ -7,6 +7,9 @@ import cookieParser from "cookie-parser";
 // Utils Packages
 import connectDB from "./config/db.js";
 
+// Routes Import
+import userRoutes from "./routes/userRoutes.js";
+
 // Env Configuration
 dotenv.config();
 
@@ -23,6 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.send("Hello");
 });
+
+app.use("/api/users", userRoutes);
 
 app.listen(Port, () => {
   console.log(`listening on port ${Port}`);

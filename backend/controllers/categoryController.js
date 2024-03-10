@@ -6,6 +6,7 @@ export const createCategoryController = async (req, res) => {
     if (!name) {
       return res.status(400).send({
         message: "Name is required",
+        success: false,
       });
     }
 
@@ -13,6 +14,7 @@ export const createCategoryController = async (req, res) => {
     if (existCategory) {
       return res.status(400).send({
         message: "Category already exists",
+        success: false,
       });
     }
 
@@ -21,11 +23,13 @@ export const createCategoryController = async (req, res) => {
     return res.status(200).send({
       message: "Category created successfully",
       newCategory,
+      success: true,
     });
   } catch (error) {
     console.log("Category error: " + error);
     return res.status(500).send({
       error: error,
+      success: false,
     });
   }
 };
@@ -53,11 +57,13 @@ export const updateCategoryController = async (req, res) => {
     return res.status(200).send({
       message: "Category Updated successfully",
       category,
+      success: true,
     });
   } catch (error) {
     console.log("Update Category error: " + error);
     return res.status(500).send({
       error: error,
+      success: false,
     });
   }
 };
@@ -68,17 +74,20 @@ export const getAllCategoryController = async (req, res) => {
     if (!data) {
       return res.status(400).send({
         message: "Category Not Found",
+        success: false,
       });
     }
 
     return res.status(200).send({
       message: "Categories Found",
       data,
+      success: true,
     });
   } catch (error) {
     console.log("Getting Category error: " + error);
     return res.status(500).send({
       error: error,
+      success: false,
     });
   }
 };
@@ -98,11 +107,13 @@ export const getOneCategoryController = async (req, res) => {
     return res.status(200).send({
       message: "Category Found",
       data,
+      success: true,
     });
   } catch (error) {
     console.log("Getting Category error: " + error);
     return res.status(500).send({
       error: error,
+      success: false,
     });
   }
 };
@@ -120,6 +131,7 @@ export const deleteCategoryController = async (req, res) => {
     }
 
     return res.status(200).send({
+      success: true,
       message: "Category Deleted",
       data,
     });
@@ -127,6 +139,7 @@ export const deleteCategoryController = async (req, res) => {
     console.log("Deleting Category error: " + error);
     return res.status(500).send({
       error: error,
+      success: false,
     });
   }
 };

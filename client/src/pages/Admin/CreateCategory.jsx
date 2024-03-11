@@ -22,6 +22,7 @@ const CreateCategory = () => {
   const modalAct = (c) => {
     setIsModalOpen(true);
     setSelectedCategory(c);
+    setIsDelete(false);
     // console.log("C",selectedCategory);
   };
 

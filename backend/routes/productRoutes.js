@@ -14,8 +14,8 @@ const router = express.Router();
 
 router.post(
   "/create-product",
-  authenticate,
-  authorizeAdmin,
+  // authenticate,
+  // authorizeAdmin,
   formidable(),
   createProductController
 );
@@ -33,8 +33,8 @@ router.delete("/delete-product/:id", deleteByIdController);
 
 router.put(
   "/update-product/:id",
-  authenticate,
-  authorizeAdmin,
+  // authenticate,
+  // authorizeAdmin,
   formidable(),
   updateProductController
 );

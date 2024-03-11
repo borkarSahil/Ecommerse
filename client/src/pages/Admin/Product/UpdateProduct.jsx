@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
-import AdminMenu from "./AdminMenu";
-import { BACKEND_URL } from "../../helper/constants";
+
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Select } from "antd";
-import { Button } from "../../components/ui/button";
-import { useNavigate } from "react-router";
+
+import { useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { BACKEND_URL } from "../../../helper/constants";
+import AdminMenu from "../AdminMenu";
+import { Button } from "../../../components/ui/button";
 const { Option } = Select;
 
-const CreateProduct = () => {
+const UpdateProduct = () => {
   const navigate = useNavigate();
 
-  const [categories, setCategories] = useState([]);
+  const { id } = useParams();
+  console.log("_id: " + id);
+  const [product, setProduct] = useState("");
 
+  //    States
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -22,40 +27,53 @@ const CreateProduct = () => {
   const [photo, setPhoto] = useState("");
   const [category, setCategory] = useState("");
 
-  const getAllCategory = async () => {
+  const getProductById = async () => {
     try {
       const { data } = await axios.get(
-        `${BACKEND_URL}/api/category/get-category`
+        `${BACKEND_URL}/api/products/get-products/${id}`
       );
-      if (!data) {
-        toast.error("No Category found");
-      } else {
-        setCategories(data?.data);
+      //   console.log("Data ", data.data);
+      if (data.success) {
+        setProduct(data.data);
+
+        // Set Initial value of states
+        setName(data.data?.name);
+        consofrole.log("Names", name);
+        setPrice(data.data?.price);
+        setDescription(data.data?.description);
+        setQuantity(data.data?.quantity);
+        setShipping(data.data?.shipping);
+        setCategory(data.data?.category._id);
       }
+      console.log("Product C", category);
     } catch (error) {
-      console.log("Categories error", error);
       toast.error(error.message);
+      console.log("Single Product Error: " + error);
     }
   };
 
   useEffect(() => {
-    getAllCategory();
+    getProductById();
+    console.log(product.name);
   }, []);
 
-  const createProduct = async (e) => {
-    console.log(
-      "pdata : ",
-      name,
-      description,
-      price,
-      quantity,
-      shipping,
-      photo,
-      category
-    );
+  const [categories, setCategories] = useState([]);
+  const updateProduct = async (e) => {
     e.preventDefault();
-    console.log("category", category);
     try {
+      console.log(
+        "product data : ",
+        name,
+        description,
+        price,
+        quantity,
+        shipping,
+        photo,
+        category
+      );
+      //   e.preventDefault();
+      console.log("category", category);
+
       const formData = new FormData();
       formData.append("name", name);
       formData.append("description", description);
@@ -63,14 +81,15 @@ const CreateProduct = () => {
       formData.append("quantity", quantity);
       formData.append("category", category);
       formData.append("shipping", shipping);
-      formData.append("photo", photo);
+      photo && formData.append("photo", photo);
 
-      // for (const pair of formData.entries()) {
-      //   console.log(pair[0], pair[1]);
-      // }
+      for (const pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      console.log(`${BACKEND_URL}/api/products/update-product/${id}`);
 
-      const { data } = await axios.post(
-        `${BACKEND_URL}/api/products/create-product`,
+      const { data } = await axios.put(
+        `${BACKEND_URL}/api/products/update-product/${id}`,
         formData,
         {
           headers: {
@@ -78,14 +97,16 @@ const CreateProduct = () => {
           },
         }
       );
+      console.log("DATA", data);
 
-      if (data?.success) {
+      if (data.success) {
         toast.success("Product created successfully");
-        navigate("/dashboard");
+        navigate("/dashboard/products");
+      } else {
+        toast.error(data?.message);
       }
-      console.log(data.message);
     } catch (error) {
-      console.log("Create Product error", error);
+      console.log("Update Product error", error);
       toast.error(error.message);
     }
   };
@@ -93,7 +114,7 @@ const CreateProduct = () => {
   return (
     <div>
       <AdminMenu />
-      CreateProduct
+      updateProduct
       <div>
         <div className="m-1 w-72 mt-10 ">
           <Select
@@ -102,6 +123,7 @@ const CreateProduct = () => {
             onChange={(value) => {
               setCategory(value);
             }}
+            value={category}
           >
             {categories?.map((category) => (
               <Option key={category._id} value={category._id}>
@@ -124,10 +146,15 @@ const CreateProduct = () => {
           </div>
 
           <div className="m-5">
-            {photo && (
+            {photo ? (
               <div className="text-center h-72">
                 <img src={URL.createObjectURL(photo)} alt="Product" />
               </div>
+            ) : (
+              <img
+                src={`${BACKEND_URL}/api/products/get-photo/${product._id}`}
+                alt={product.name}
+              />
             )}
           </div>
 
@@ -176,6 +203,7 @@ const CreateProduct = () => {
               onChange={(value) => {
                 setShipping(value);
               }}
+              value={shipping ? "Yes" : "No"}
             >
               <Option value="true">Yes</Option>
               <Option value="false">No</Option>
@@ -184,16 +212,11 @@ const CreateProduct = () => {
         </div>
 
         <div>
-          <Button onClick={createProduct}>Create Product</Button>
+          <Button onClick={updateProduct}>Update Product</Button>
         </div>
-      </div>
-      <div className="m-5 content-center justify-center text-center">
-        <Link to="/dashboard/products">
-          <Button>Products</Button>
-        </Link>
       </div>
     </div>
   );
 };
 
-export default CreateProduct;
+export default UpdateProduct;

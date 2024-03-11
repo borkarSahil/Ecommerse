@@ -6,14 +6,14 @@ import { toast } from "react-toastify";
 
 const CategoryDelete = ({ selectedCategory, getAllCategory }) => {
   const handleDelete = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     const id = selectedCategory._id;
     console.log(id);
     try {
       const { data } = await axios.delete(
         `${BACKEND_URL}/api/category/delete-category/${id}`
       );
-
+      console.log(data);
       if (data.success) {
         getAllCategory();
         toast.success("Category Deleted successfully");

@@ -102,11 +102,11 @@ export const deleteByIdController = async (req, res) => {
         .status(200)
         .send({ message: "Product deleted", deleteProduct });
     } else {
-      return res.status(400).send({ message: "Product deleting error" });
+      return res.status(400).send({ message: "Product deleting error", success: true  });
     }
   } catch (error) {
     console.log("Creating Product error: " + error);
-    res.status(400).send({ message: "Creating Product error", error: error });
+    res.status(400).send({ message: "Creating Product error", error: error , success: false});
   }
 };
 
@@ -115,29 +115,45 @@ export const updateProductController = async (req, res) => {
     const { name, description, price, category, quantity, shipping } =
       req.fields;
     const { photo } = req.files;
-    if (!name || !description || !price || !category || !quantity || !photo) {
-      res.status(400).send({ message: "Provide all fields", error: error });
-    }
     const { id } = req.params;
-    // const updatedFields = {};
-    // if (name) updatedFields.name = name;
-    // if (description) updatedFields.description = description;
-    // if (price) updatedFields.price = price;
-    // if (category) updatedFields.category = category;
-    // if (quantity) updatedFields.quantity = quantity;
-    // if (shipping) updatedFields.shipping = shipping;
-    // console.log("id",id, name);
-    const products = await Product.findByIdAndUpdate(
-      id,
-      { ...req.fields },
-      {
-        new: true,
-      }
+
+    const products = await Product.findById(id);
+    console.log("P : ", products);
+
+    products.name = name;
+    products.description = description;
+    products.price = price;
+    products.category = category; // Assuming category is just an ID
+    products.quantity = quantity;
+    products.shipping = shipping === "true"; // Convert string to boolean
+
+    console.log("product : ", products.name);
+    console.log("Id in backend: " + id);
+    console.log(
+      "Updating Product backend: " +
+        name +
+        " " +
+        description +
+        " " +
+        price +
+        " " +
+        category +
+        " " +
+        quantity +
+        " " +
+        shipping
     );
+
+    if (!products) {
+      return res.status(404).send({ message: "Product not found" });
+    }
+    // console.log("here 1");
+
     if (photo) {
       products.photo.data = fs.readFileSync(photo.path);
       products.photo.contentType = photo.type;
     }
+    // console.log("here 2");
 
     await products.save();
     console.log("pproduct", products);
@@ -146,8 +162,10 @@ export const updateProductController = async (req, res) => {
       .send({ message: "Success", products, success: true });
   } catch (error) {
     console.log("Updating Product error: " + error);
-    return res
-      .status(400)
-      .send({ message: "Updating Product error", error: error , success:false});
+    return res.status(400).send({
+      message: "Updating Product error",
+      error: error,
+      success: false,
+    });
   }
 };

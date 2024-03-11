@@ -6,7 +6,12 @@ import { BACKEND_URL } from "../../../helper/constants";
 
 const CategoryEdit = ({ selectedCategory, getAllCategory, handleOk }) => {
   const [newCategoryName, setNewCategoryName] = useState(selectedCategory.name);
-  // console.log(selectedCategory._id);
+  // console.log(selectedCategory.name);
+
+  useEffect(() => {
+    setNewCategoryName(selectedCategory.name);
+  }, [selectedCategory]);
+
 
   const handleEdit = async (e) => {
     e.preventDefault();

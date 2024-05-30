@@ -21,11 +21,19 @@ import Orders from "./pages/Admin/ManageUsers/Orders.jsx";
 import Products from "./pages/Admin/Product/Products.jsx";
 import SingleProduct from "./pages/Admin/Product/SingleProduct.jsx";
 import UpdateProduct from "./pages/Admin/Product/UpdateProduct.jsx";
+import Search from "./pages/Search.jsx";
+import ProductDetails from "./pages/ProductDetails.jsx";
+import Cart from "./pages/Cart.jsx";
+import Shop from "./pages/Shop/Shop.jsx";
 
 function App() {
   return (
     <Layout>
       <Routes>
+        {/*  SHOP */}
+        <Route path="/shop" element={<Shop />} />
+
+
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
@@ -40,7 +48,10 @@ function App() {
         {/* Products Route */}
         <Route path="/dashboard/products" element={<Products />} />
         <Route path="/dashboard/products/:id" element={<SingleProduct />} />
-        <Route path="/dashboard/products/update/:id" element={<UpdateProduct />} />
+        <Route
+          path="/dashboard/products/update/:id"
+          element={<UpdateProduct />}
+        />
 
         {/* Admin Routes */}
         <Route path="/admin/create-categories" element={<CreateCategory />} />
@@ -50,6 +61,15 @@ function App() {
         <Route path="/admin/manage-users" element={<ManageUsers />} />
         <Route path="/dashboard/user/profile" element={<UserProfile />} />
         <Route path="/dashboard/user/orders" element={<Orders />} />
+
+        {/*Search*/}
+        <Route path="/search" element={<Search />} />
+
+        {/*Product Details*/}
+        <Route path="/product-details/:slug" element={<ProductDetails />} />
+
+        {/*Cart*/}
+        <Route path="/cart" element={<Cart />} />
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>

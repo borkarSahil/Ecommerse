@@ -32,22 +32,27 @@ const Products = () => {
   return (
     <div>
       <AdminMenu />
-      Products :
-      <div>
-        {products?.map((p) => (
-          <Link to={`/dashboard/products/${p._id}`}>
-            <div className="m-5 border-2">
-              <h2>{p.name}</h2>
-              <h2>{p.description}</h2>
-              <h2>{p.price}</h2>
-              <h2>{p.quantity}</h2>
-              <img
-                src={`${BACKEND_URL}/api/products/get-photo/${p._id}`}
-                alt={p.name}
-              />
-            </div>
-          </Link>
-        ))}
+      <div className="min-h-screen bg-gray-100 p-5">
+        <h1 className="text-2xl font-bold my-6">Products</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {products?.map((p) => (
+            <Link to={`/dashboard/products/${p._id}`} key={p._id}>
+              <div className="bg-white shadow-md rounded-lg overflow-hidden">
+                <img
+                  src={`${BACKEND_URL}/api/products/get-photo/${p._id}`}
+                  alt={p.name}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4">
+                  <h2 className="text-lg font-bold mb-2">{p.name}</h2>
+                  <p className="text-gray-700 mb-2">{p.description}</p>
+                  <p className="text-gray-900 font-semibold">${p.price}</p>
+                  <p className="text-gray-600">Quantity: {p.quantity}</p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

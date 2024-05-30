@@ -93,104 +93,110 @@ const CreateProduct = () => {
   return (
     <div>
       <AdminMenu />
-      CreateProduct
-      <div>
-        <div className="m-1 w-72 mt-10 ">
-          <Select
-            placeholder="Select Category"
-            showSearch
-            onChange={(value) => {
-              setCategory(value);
-            }}
-          >
-            {categories?.map((category) => (
-              <Option key={category._id} value={category._id}>
-                {category.name}
-              </Option>
-            ))}
-          </Select>
-
-          <div className="m-10 border-2 border-slate-900 border-spacing-3 bg-sky-100 p-2 rounded">
-            <label>
-              {photo ? photo.name : "Upload Image"}
-              <input
-                type="file"
-                name="photo"
-                accept="image/*"
-                onChange={(e) => setPhoto(e.target.files[0])}
-                hidden
-              />
-            </label>
-          </div>
-
-          <div className="m-5">
-            {photo && (
-              <div className="text-center h-72">
-                <img src={URL.createObjectURL(photo)} alt="Product" />
+      <div className="min-h-screen bg-gray-100 p-5">
+        <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-lg shadow-md">
+          <h1 className="text-2xl font-bold mb-6">Create Product</h1>
+          <form onSubmit={createProduct}>
+            <div className="mb-4">
+              <Select
+                placeholder="Select Category"
+                showSearch
+                onChange={(value) => setCategory(value)}
+                className="w-full"
+              >
+                {categories?.map((category) => (
+                  <Option key={category._id} value={category._id}>
+                    {category.name}
+                  </Option>
+                ))}
+              </Select>
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">
+                {photo ? photo.name : "Upload Image"}
+                <input
+                  type="file"
+                  name="photo"
+                  accept="image/*"
+                  onChange={(e) => setPhoto(e.target.files[0])}
+                  className="hidden"
+                />
+              </label>
+              <div className="border border-gray-300 rounded p-2 bg-gray-50">
+                <div className="text-center">
+                  {photo && (
+                    <img
+                      src={URL.createObjectURL(photo)}
+                      alt="Product"
+                      className="mx-auto h-48"
+                    />
+                  )}
+                </div>
               </div>
-            )}
-          </div>
-
-          <div className="m-2 ">
-            <input
-              type="text"
-              className="border-2"
-              value={name}
-              placeholder="Name"
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="m-2 ">
-            <input
-              type="text"
-              className="border-2"
-              value={description}
-              placeholder="description"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-          <div className="m-2 ">
-            <input
-              type="text"
-              className="border-2"
-              value={price}
-              placeholder="price"
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </div>
-          <div className="m-2 ">
-            <input
-              type="text"
-              className="border-2"
-              value={quantity}
-              placeholder="quantity"
-              onChange={(e) => setQuantity(e.target.value)}
-            />
-          </div>
-          <div className="m-2 ">
-            <Select
-              placeholder="Select Shipping "
-              size="large"
-              showSearch
-              className="form-select mb-3"
-              onChange={(value) => {
-                setShipping(value);
-              }}
+            </div>
+            <div className="mb-4">
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded"
+                value={name}
+                placeholder="Name"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded"
+                value={description}
+                placeholder="Description"
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded"
+                value={price}
+                placeholder="Price"
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <input
+                type="text"
+                className="w-full p-2 border border-gray-300 rounded"
+                value={quantity}
+                placeholder="Quantity"
+                onChange={(e) => setQuantity(e.target.value)}
+              />
+            </div>
+            <div className="mb-6">
+              <Select
+                placeholder="Select Shipping"
+                size="large"
+                showSearch
+                className="w-full"
+                onChange={(value) => setShipping(value)}
+              >
+                <Option value="true">Yes</Option>
+                <Option value="false">No</Option>
+              </Select>
+            </div>
+            <Button
+              type="submit"
+              className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
-              <Option value="true">Yes</Option>
-              <Option value="false">No</Option>
-            </Select>
-          </div>
+              Create Product
+            </Button>
+          </form>
         </div>
-
-        <div>
-          <Button onClick={createProduct}>Create Product</Button>
+        <div className="text-center mt-5">
+          <Link to="/dashboard/products">
+            <Button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+              View Products
+            </Button>
+          </Link>
         </div>
-      </div>
-      <div className="m-5 content-center justify-center text-center">
-        <Link to="/dashboard/products">
-          <Button>Products</Button>
-        </Link>
       </div>
     </div>
   );

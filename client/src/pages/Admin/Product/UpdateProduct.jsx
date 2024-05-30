@@ -114,105 +114,115 @@ const UpdateProduct = () => {
   return (
     <div>
       <AdminMenu />
-      updateProduct
-      <div>
-        <div className="m-1 w-72 mt-10 ">
-          <Select
-            placeholder="Select Category"
-            showSearch
-            onChange={(value) => {
-              setCategory(value);
-            }}
-            value={category}
-          >
-            {categories?.map((category) => (
-              <Option key={category._id} value={category._id}>
-                {category.name}
-              </Option>
-            ))}
-          </Select>
-
-          <div className="m-10 border-2 border-slate-900 border-spacing-3 bg-sky-100 p-2 rounded">
-            <label>
-              {photo ? photo.name : "Upload Image"}
-              <input
-                type="file"
-                name="photo"
-                accept="image/*"
-                onChange={(e) => setPhoto(e.target.files[0])}
-                hidden
-              />
-            </label>
-          </div>
-
-          <div className="m-5">
-            {photo ? (
-              <div className="text-center h-72">
-                <img src={URL.createObjectURL(photo)} alt="Product" />
-              </div>
-            ) : (
-              <img
-                src={`${BACKEND_URL}/api/products/get-photo/${product._id}`}
-                alt={product.name}
-              />
-            )}
-          </div>
-
-          <div className="m-2 ">
-            <input
-              type="text"
-              className="border-2"
-              value={name}
-              placeholder="Name"
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="m-2 ">
-            <input
-              type="text"
-              className="border-2"
-              value={description}
-              placeholder="description"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-          <div className="m-2 ">
-            <input
-              type="text"
-              className="border-2"
-              value={price}
-              placeholder="price"
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </div>
-          <div className="m-2 ">
-            <input
-              type="text"
-              className="border-2"
-              value={quantity}
-              placeholder="quantity"
-              onChange={(e) => setQuantity(e.target.value)}
-            />
-          </div>
-          <div className="m-2 ">
+      <div className="min-h-screen bg-gray-100 flex flex-col items-center p-5">
+        <div className="w-full max-w-2xl bg-white shadow-md rounded-lg overflow-hidden mt-10">
+          <form onSubmit={updateProduct} className="p-6">
+            <h2 className="text-2xl font-bold mb-5">Update Product</h2>
             <Select
-              placeholder="Select Shipping "
-              size="large"
+              placeholder="Select Category"
               showSearch
-              className="form-select mb-3"
-              onChange={(value) => {
-                setShipping(value);
-              }}
-              value={shipping ? "Yes" : "No"}
+              value={category}
+              onChange={setCategory}
+              className="w-full mb-5"
             >
-              <Option value="true">Yes</Option>
-              <Option value="false">No</Option>
+              {categories.map((cat) => (
+                <Option key={cat._id} value={cat._id}>
+                  {cat.name}
+                </Option>
+              ))}
             </Select>
-          </div>
-        </div>
-
-        <div>
-          <Button onClick={updateProduct}>Update Product</Button>
+            <div className="mb-5">
+              <label className="block text-gray-700">Upload Image</label>
+              <div className="flex items-center mt-2">
+                <input
+                  type="file"
+                  name="photo"
+                  accept="image/*"
+                  onChange={(e) => setPhoto(e.target.files[0])}
+                  className="hidden"
+                  id="upload-photo"
+                />
+                <label
+                  htmlFor="upload-photo"
+                  className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded"
+                >
+                  {photo ? photo.name : "Choose File"}
+                </label>
+              </div>
+              <div className="mt-5">
+                {photo ? (
+                  <img
+                    src={URL.createObjectURL(photo)}
+                    alt="Product"
+                    className="w-full h-64 object-cover"
+                  />
+                ) : (
+                  <img
+                    src={`${BACKEND_URL}/api/products/get-photo/${product._id}`}
+                    alt={product.name}
+                    className="w-full h-64 object-cover"
+                  />
+                )}
+              </div>
+            </div>
+            <div className="mb-5">
+              <input
+                type="text"
+                className="w-full border-2 p-2 rounded"
+                value={name}
+                placeholder="Name"
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="mb-5">
+              <input
+                type="text"
+                className="w-full border-2 p-2 rounded"
+                value={description}
+                placeholder="Description"
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+            <div className="mb-5">
+              <input
+                type="text"
+                className="w-full border-2 p-2 rounded"
+                value={price}
+                placeholder="Price"
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </div>
+            <div className="mb-5">
+              <input
+                type="text"
+                className="w-full border-2 p-2 rounded"
+                value={quantity}
+                placeholder="Quantity"
+                onChange={(e) => setQuantity(e.target.value)}
+              />
+            </div>
+            <div className="mb-5">
+              <Select
+                placeholder="Select Shipping"
+                size="large"
+                showSearch
+                className="w-full"
+                value={shipping}
+                onChange={(value) => setShipping(value)}
+              >
+                <Option value="true">Yes</Option>
+                <Option value="false">No</Option>
+              </Select>
+            </div>
+            <div className="flex justify-end">
+              <Button type="submit" className="mr-2">
+                Update Product
+              </Button>
+              <Link to="/dashboard/products">
+                <Button variant="secondary">Cancel</Button>
+              </Link>
+            </div>
+          </form>
         </div>
       </div>
     </div>

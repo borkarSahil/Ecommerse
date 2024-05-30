@@ -42,17 +42,33 @@ const CategoryEdit = ({ selectedCategory, getAllCategory, handleOk }) => {
   };
 
   return (
-    <form onSubmit={handleEdit}>
-      <label>
+    <form
+      onSubmit={handleEdit}
+      className="bg-white p-6 rounded shadow-md w-full max-w-md mx-auto"
+    >
+      <h2 className="text-2xl font-semibold mb-4">Edit Category</h2>
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-2" htmlFor="categoryName">
+          New Category Name
+        </label>
         <input
+          id="categoryName"
           type="text"
           value={newCategoryName}
           onChange={(e) => setNewCategoryName(e.target.value)}
           placeholder="Enter new category name"
           required
+          className="w-full p-2 border rounded"
         />
-      </label>
-      <Button type="submit">Submit</Button>
+      </div>
+      <div className="flex justify-end">
+        <Button
+          type="submit"
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+        >
+          Submit
+        </Button>
+      </div>
     </form>
   );
 };

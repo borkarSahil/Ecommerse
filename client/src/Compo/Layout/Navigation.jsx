@@ -2,8 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../Context/auth";
 import { toast } from "react-toastify";
+import SearchInput from "../Search/SearchInput";
+import { useCart } from "../../Context/cart";
 
 const Navigation = () => {
+  const [cart] = useCart();
   const navigate = useNavigate();
 
   const [auth, setAuth] = useAuth();
@@ -25,61 +28,62 @@ const Navigation = () => {
   };
 
   return (
-    <header className="text-gray-600 body-font">
-      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-        <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
-          <span className="ml-3 text-xl">Gada Electronics</span>
-        </a>
-        <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-          <Link to="/">
-            <p className="mr-5 hover:text-gray-900">Home</p>
+    <header className="bg-sky-700 text-white body-font shadow-lg pb-0 mb-0">
+      <div className="container mx-auto flex flex-wrap p-3 flex-col md:flex-row items-center justify-between pb-0 mb-0">
+        <Link
+          to="/"
+          className="flex title-font font-medium items-center mb-4 md:mb-0"
+        >
+          <span className="ml-3 text-2xl font-bold">Gada Electronics</span>
+        </Link>
+        <nav className="flex flex-wrap items-center text-base justify-center md:ml-auto md:mr-auto space-x-4">
+          <SearchInput />
+          <Link to="/" className="hover:text-indigo-300">
+            Home
           </Link>
-
-          <Link to="/shop">
-            <p className="mr-5 hover:text-gray-900">Shop</p>
+          <Link to="/shop" className="hover:text-indigo-300">
+            Shop
           </Link>
-
-          <Link to="/cart">
-            <p className="mr-5 hover:text-gray-900">Cart</p>
+          <Link to="/cart" className="hover:text-indigo-300">
+            Cart ({cart.length})
           </Link>
-
-          <Link to="/favourite">
-            <p className="mr-5 hover:text-gray-900">Favourites</p>
+          <Link to="/favourite" className="hover:text-indigo-300">
+            Favourites
           </Link>
         </nav>
-
-        {auth.existingUser && auth.existingUser.isAdmin && (
-          <Link to="/dashboard">
-            <li>DashBoard</li>
-          </Link>
-        )}
-
-        {auth.existingUser && (
-          <Link to="/profile">
-            <li>{auth.existingUser.username}</li>
-          </Link>
-        )}
-
-        {!auth.existingUser ? (
-          <>
-            <Link to="/login">
-              <Button className="mr-5 ">Login</Button>
+        <div className="flex items-center space-x-4">
+          {auth.existingUser && auth.existingUser.isAdmin && (
+            <Link to="/dashboard" className="hover:text-indigo-300">
+              Dashboard
             </Link>
-            <Link to="/signup">
-              <Button className="mr-5">SignUp</Button>
-            </Link>
-          </>
-        ) : (
-          <>
-            <div>
-              <Link>
-                <Button onClick={logoutHandler} className="m-2">
-                  LogOut
+          )}
+          {auth.existingUser ? (
+            <>
+              <Link to="/profile" className="hover:text-indigo-300">
+                {auth.existingUser.username}
+              </Link>
+              <Button
+                onClick={logoutHandler}
+                className="bg-red-500 hover:bg-red-600 text-white"
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button className="bg-indigo-500 hover:bg-indigo-600 text-white">
+                  Login
                 </Button>
               </Link>
-            </div>
-          </>
-        )}
+              <Link to="/signup">
+                <Button className="bg-indigo-500 hover:bg-indigo-600 text-white">
+                  SignUp
+                </Button>
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );

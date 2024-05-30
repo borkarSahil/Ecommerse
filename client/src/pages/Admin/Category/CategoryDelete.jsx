@@ -27,10 +27,19 @@ const CategoryDelete = ({ selectedCategory, getAllCategory }) => {
     }
   };
   return (
-    <div>
-      <div>{selectedCategory.name}</div>
-      <div>
-        <Button onClick={handleDelete}>Delete</Button>
+    <div className="bg-white p-6 rounded shadow-md w-full max-w-md mx-auto">
+      <h2 className="text-xl font-semibold mb-4">Delete Category</h2>
+      <p className="mb-4">
+        Are you sure you want to delete the category:{" "}
+        <span className="font-bold">{selectedCategory.name}</span>?
+      </p>
+      <div className="flex justify-end">
+        <Button
+          onClick={handleDelete}
+          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+        >
+          Delete
+        </Button>
       </div>
     </div>
   );

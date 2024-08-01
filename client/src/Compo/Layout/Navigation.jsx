@@ -47,9 +47,11 @@ const Navigation = () => {
           <Link to="/cart" className="hover:text-indigo-300">
             Cart ({cart.length})
           </Link>
+          {/*
           <Link to="/favourite" className="hover:text-indigo-300">
             Favourites
           </Link>
+           */}
         </nav>
         <div className="flex items-center space-x-4">
           {auth.existingUser && auth.existingUser.isAdmin && (

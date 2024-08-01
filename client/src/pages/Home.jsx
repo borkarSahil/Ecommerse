@@ -7,11 +7,10 @@ import { toast } from "react-toastify";
 import { BACKEND_URL } from "../helper/constants";
 
 const Home = () => {
-  
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-
     const getCategories = async () => {
       try {
         const { data } = await axios.get(
@@ -25,6 +24,24 @@ const Home = () => {
       }
     };
     getCategories();
+
+    const getAllProducts = async (req, res) => {
+      try {
+        // setLoading(true);
+        const { data } = await axios.get(
+          `${BACKEND_URL}/api/products/get-products`
+        );
+        // setLoading(false);
+
+        setProducts(data.data);
+        console.log("Data", products);
+      } catch (error) {
+        console.log("Fetching products error", error);
+        toast.error(error);
+      }
+    };
+
+    getAllProducts();
   }, []);
 
   return (
@@ -40,7 +57,6 @@ const Home = () => {
         </Link>
       </div>
 
-
       {/* Categories Section */}
       <div>
         <h2 className="text-2xl font-bold mb-6">Categories</h2>
@@ -54,6 +70,33 @@ const Home = () => {
               <span className="text-lg font-semibold">{category.name}</span>
             </Link>
           ))}
+        </div>
+
+        {/* Products Section */}
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Products</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <div
+                key={product._id}
+                className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200"
+              >
+                <img
+                  // className="w-full h-48 object-cover my-4"
+                  src={`${BACKEND_URL}/api/products/get-photo/${product._id}`}
+                  alt={product.name}
+                  className="w-full h-48 object-cover rounded-t-lg mb-4"
+                />
+                <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+                <p className="text-gray-700 mb-4">${product.price}</p>
+                <Link to={`/product/${product._id}`}>
+                  <button className="bg-blue-900 text-white py-2 px-4 rounded-lg w-full">
+                    View Details
+                  </button>
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
